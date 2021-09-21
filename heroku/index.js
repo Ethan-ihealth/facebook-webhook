@@ -31,7 +31,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + JSON.stringify(retrieved_lead, null, 2) + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + JSON.stringify(retrieved_lead) + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -67,7 +67,6 @@ app.post('/facebook', function(req, res) {
       console.log('body:', body);
     });
   });
-  email = retrieved_lead.field_data;
 
   // Send sms to manager including the user info
   // client.messages 
