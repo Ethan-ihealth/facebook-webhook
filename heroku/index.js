@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
-var retrieved_lead = [];
+var retrieved_lead = {};
 var leadgen_id = [];
 
 //For Sms Service
@@ -63,7 +63,8 @@ app.post('/facebook', function(req, res) {
     request(`https://graph.facebook.com/v12.0/${data}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
     function(err, res, body) {
       console.error('error:', err);
-      retrieved_lead.unshift(body.field_data);
+      // retrieved_lead.unshift(body.field_data);
+      retrieved_lead = body;
       console.log('body:', body);
     });
   });
