@@ -19,10 +19,11 @@ app.use(bodyParser.json());
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
+var leadgen_id = "";
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '123' + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + leadgen_id + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -48,6 +49,7 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   received_updates.unshift(req.body);
+  leadgen_id = received_updates[0].entry[0].changes[0].value.leadgen_id;
   res.sendStatus(200);
 });
 
