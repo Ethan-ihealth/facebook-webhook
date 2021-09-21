@@ -57,17 +57,21 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   received_updates.unshift(req.body);
-  received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
+  if(received_updates) {
+    received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
+  }
   // Retrieve user info based on lead ads id
-  leadgen_id.map(data => {
-    request(`https://graph.facebook.com/v12.0/${data}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
-    function(err, res, body) {
-      console.error('error:', err);
-      // retrieved_lead.unshift(body.field_data);
-      retrieved_lead.unshift(body);
-      console.log('body:', body);
+  if(leadgen_id) {
+    leadgen_id.map(leadId => {
+      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBABfQrsRleDMWWT2ZCtLA0r9Rn0KWJbHz9xIJOFNZAZAnB9XBjN1MvnEtZA8tzaouM3cfPf1bfZBh6hJauW6fNAviwhK7D5zVPbAdFQ4FA1B7jeODtYhZCZCPtYmYaEHeDZBymAFw1cxaZB4JypDPZBNY38BNCDmG5AZBR4HBITOn8hzKMq7JLUSk9IQXxLpLxYTCE0uyX8BUXYBQa9NdmXdCq4ZD`,
+      function(err, res, body) {
+        console.error('error:', err);
+        retrieved_lead.unshift(body);
+        console.log('body:', body);
+      });
     });
-  });
+  }
+  
   // Send sms to manager including the user info
   client.messages 
       .create({ 
