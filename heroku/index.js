@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
+var retrieved_lead = {};
 var leadgen_id = [];
 
 //For Sms Service
