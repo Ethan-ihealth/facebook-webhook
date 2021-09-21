@@ -63,7 +63,7 @@ app.post('/facebook', function(req, res) {
          from: '+13346038848',
          to: '+13123076745' 
        }) 
-      .then(message => console.log(message.sid)) 
+      .then(message => console.log('Successfully send')) 
       .done();
   res.sendStatus(200);
 });
