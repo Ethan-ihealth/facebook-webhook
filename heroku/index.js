@@ -69,15 +69,15 @@ app.post('/facebook', function(req, res) {
     });
   });
   // Send sms to manager including the user info
-  // client.messages 
-  //     .create({ 
-  //        body: leadgen_id,  
-  //        from: '+13346038848',
-  //        to: '+13123076745' 
-  //      }) 
-  //     .then(message => console.log('Successfully send')) 
-  //     .done();
-  // res.sendStatus(200);
+  client.messages 
+      .create({ 
+         body: JSON.stringify(retrieved_lead),  
+         from: '+13346038848',
+         to: '+13123076745' 
+       }) 
+      .then(message => console.log('Successfully send')) 
+      .done();
+  res.sendStatus(200);
 });
 
 app.post('/instagram', function(req, res) {
