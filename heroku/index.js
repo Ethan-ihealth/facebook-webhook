@@ -58,12 +58,16 @@ app.post('/facebook', function(req, res) {
   // Process the Facebook updates here
   received_updates.unshift(req.body);
   received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
-  request(`https://graph.facebook.com/v12.0/${leadgen_id[0]}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
+  // Retrieve user info based on lead ads id
+  leadgen_id.map(data => {
+    request(`https://graph.facebook.com/v12.0/${data}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
     function(err, res, body) {
       console.error('error:', err);
       retrieved_lead = JSON.stringify(body, null, 2);
       console.log('body:', body);
+    });
   });
+  // Send sms to manager including the user info
   // client.messages 
   //     .create({ 
   //        body: leadgen_id,  
