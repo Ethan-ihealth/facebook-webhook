@@ -60,11 +60,11 @@ app.post('/facebook', function(req, res) {
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
   }
-  
+
   // Retrieve user info based on lead ads id
   if(leadgen_id) {
     leadgen_id.map(leadId => {
-      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBABfQrsRleDMWWT2ZCtLA0r9Rn0KWJbHz9xIJOFNZAZAnB9XBjN1MvnEtZA8tzaouM3cfPf1bfZBh6hJauW6fNAviwhK7D5zVPbAdFQ4FA1B7jeODtYhZCZCPtYmYaEHeDZBymAFw1cxaZB4JypDPZBNY38BNCDmG5AZBR4HBITOn8hzKMq7JLUSk9IQXxLpLxYTCE0uyX8BUXYBQa9NdmXdCq4ZD`,
+      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAMaA8ZCycMMuFnLDShxKdcAJbMXuoBu3H4V30r0dVkgyEZBLyiBHxRkzNuDf6h1Qi3NVBGUs0YMvPZCdfs3eSy5G8rcRlDLJrKGaXqUlZCGjYAv5zQu3ffQIMo0FU555BNAU4ydBZBPZBSDnVKoNpZBQEQOLpWDLZBrZAzoF7L59Swt5yisifDtuT5k0O6373AXnVGvCbVdW9FQxh6lH0HkMZD`,
       function(err, res, body) {
         console.error('error:', err);
         retrieved_lead.unshift(body);
