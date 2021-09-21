@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
-var leadgen_id = "";
+var leadgen_id = [];
 
 //For Sms Service
 var accountSid = 'ACebd49745fc5a61de2af1a43723d09465';
@@ -55,16 +55,16 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   received_updates.unshift(req.body);
-  leadgen_id = received_updates[0].entry[0].changes[0].value.leadgen_id;
-  client.messages 
-      .create({ 
-         body: leadgen_id,  
-        //  messagingServiceSid: 'MG02c66b6068f98945b059faa96760af11',
-         from: '+13346038848',
-         to: '+13123076745' 
-       }) 
-      .then(message => console.log('Successfully send')) 
-      .done();
+  received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
+  // leadgen_id = received_updates[0].entry[0].changes[0].value.leadgen_id;
+  // client.messages 
+  //     .create({ 
+  //        body: leadgen_id,  
+  //        from: '+13346038848',
+  //        to: '+13123076745' 
+  //      }) 
+  //     .then(message => console.log('Successfully send')) 
+  //     .done();
   res.sendStatus(200);
 });
 
