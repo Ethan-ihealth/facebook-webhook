@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 var token = process.env.TOKEN || 'token';
 var received_updates = [];
-var retrieved_lead = {};
+var retrieved_lead = [];
 var leadgen_id = [];
 
 //For Sms Service
@@ -64,7 +64,7 @@ app.post('/facebook', function(req, res) {
     function(err, res, body) {
       console.error('error:', err);
       // retrieved_lead.unshift(body.field_data);
-      retrieved_lead = body;
+      retrieved_lead = body.field_data;
       console.log('body:', body);
     });
   });
