@@ -64,8 +64,8 @@ app.post('/facebook', function(req, res) {
     function(err, res, body) {
       console.error('error:', err);
       // retrieved_lead.unshift(body.field_data);
-      retrieved_lead.unshift(body.field_data);
-      console.log('body:', body.field_data);
+      retrieved_lead.unshift(body);
+      console.log('body:', body);
     });
   });
   // Send sms to manager including the user info
