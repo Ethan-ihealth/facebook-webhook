@@ -69,23 +69,21 @@ app.post('/facebook', function(req, res) {
         console.error('error:', err);
         retrieved_lead.unshift(body);
         console.log('body:', body);
+        if(body) {
+          // Send sms to manager including the user info
+          client.messages 
+            .create({ 
+              body: retrieved_lead,  
+              from: '+13346038848',
+              to: '+13123076745' 
+            }) 
+            .then(message => console.log('Successfully send')) 
+            .done();
+        }
       });
     });
   }
-
-  // Send sms to manager including the user info
-  if(received_lead) {
-    client.messages 
-      .create({ 
-         body: retrieved_lead,  
-         from: '+13346038848',
-         to: '+13123076745' 
-       }) 
-      .then(message => console.log('Successfully send')) 
-      .done();
-  }
   res.sendStatus(200);
-  
 });
 
 app.post('/instagram', function(req, res) {
