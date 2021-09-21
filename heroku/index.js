@@ -61,7 +61,7 @@ app.post('/facebook', function(req, res) {
   request(`https://graph.facebook.com/v12.0/${leadgen_id[0]}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
     function(err, res, body) {
       console.error('error:', err);
-      retrieved_lead = JSON.stringify(body);
+      retrieved_lead = JSON.stringify(body, null, 2);
       console.log('body:', body);
   });
   // client.messages 
