@@ -60,6 +60,7 @@ app.post('/facebook', function(req, res) {
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
   }
+  
   // Retrieve user info based on lead ads id
   if(leadgen_id) {
     leadgen_id.map(leadId => {
@@ -71,17 +72,20 @@ app.post('/facebook', function(req, res) {
       });
     });
   }
-  
+
   // Send sms to manager including the user info
-  client.messages 
+  if(received_lead) {
+    client.messages 
       .create({ 
-         body: JSON.stringify(retrieved_lead),  
+         body: retrieved_lead,  
          from: '+13346038848',
          to: '+13123076745' 
        }) 
       .then(message => console.log('Successfully send')) 
       .done();
+  }
   res.sendStatus(200);
+  
 });
 
 app.post('/instagram', function(req, res) {
