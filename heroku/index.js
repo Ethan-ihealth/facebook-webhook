@@ -29,7 +29,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + leadgen_id + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + <br/> + leadgen_id + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
