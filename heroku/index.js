@@ -11,6 +11,7 @@ var express = require('express');
 var app = express();
 var xhub = require('express-x-hub');
 var twilio = require('twilio');
+var request = require('request');
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -56,7 +57,12 @@ app.post('/facebook', function(req, res) {
   // Process the Facebook updates here
   received_updates.unshift(req.body);
   received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
-  // leadgen_id = received_updates[0].entry[0].changes[0].value.leadgen_id;
+  request(`https://graph.facebook.com/v12.0/${leadgen_id[0]}?access_token=EAAIYgif4zcYBAFq7qvpETsD4TBnLb8EZBy9tBOin0Y3y3k9tF9a0blnxi8fTZAiZCjojrwaCch2nLJrKmWRJIZBtGAXRQPgOhtANHEzywyUCvbORd26JiWbjvVrrQgISXQPWuCIrWWbEX9jW6PfsH9B4zQORVHWyFz7Ai1D8xNNhiXDiMMD2zZAoMvgijeoWHM4dYLkEpjQfZAjMwfiUZB256ykZA1iepvwZD`,
+    function(err, res, body) {
+      console.error('error:', err);
+    //   retrieved_lead = JSON.stringify(res);
+      console.log('body:', body);
+  });
   // client.messages 
   //     .create({ 
   //        body: leadgen_id,  

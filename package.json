@@ -10,6 +10,7 @@
     "body-parser": "~1.15.0",
     "express": "~4.13.3",
     "express-x-hub": "^1.0.4",
+    "request": "^2.88.2",
     "twilio": "^3.67.2"
   },
   "engines": {
