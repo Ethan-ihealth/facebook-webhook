@@ -68,8 +68,8 @@ app.post('/facebook', function(req, res) {
       console.log('body:', body);
     });
   });
-  email = retrieved_lead.email;
-  
+  email = retrieved_lead.field_data;
+
   // Send sms to manager including the user info
   // client.messages 
   //     .create({ 
