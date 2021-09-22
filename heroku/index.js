@@ -78,7 +78,7 @@ const generateLongTimeToken = () => {
       reject('Invalid status code <' + res.statusCode + '>');
     }
     let obj = JSON.parse(body);
-    longLivedUserToken = obj.access_token || "";
+    return longLivedUserToken = obj.access_token || "";
   });
 }
 
@@ -93,7 +93,7 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   if(!longLivedUserToken) {
-    generateLongTimeToken();
+    longLivedUserToken = await generateLongTimeToken();
   }
   // Process the Facebook updates here
   // Deduplicate same lead ad
