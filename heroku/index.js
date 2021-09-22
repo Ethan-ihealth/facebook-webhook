@@ -61,6 +61,7 @@ const getFieldHelper = (body) => {
 
 const wordBeautify = (str) => {
   var res = str.replace(/[\"\[\]\{\}]/g,'')
+  res = res.replace(/[\"\_]/g, ' ');
   res = res.replace(/[\"\,]/g, '\n');
   return res;
 }
