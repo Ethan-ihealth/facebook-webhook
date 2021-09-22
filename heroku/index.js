@@ -59,7 +59,7 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
-  
+  // Deduplicate same lead ad
   if(!setLeadAd.has(req.body)) {
     setLeadAd.add(req.body);
     received_updates.unshift(req.body);
@@ -84,7 +84,7 @@ app.post('/facebook', function(req, res) {
             if(response.statusCode != 200) {
               reject('Invalid status code <' + response.statusCode + '>');
             }
-            retrieved_lead.unshift(body);
+            retrieved_lead.unshift(body.field_data);
             console.log('body:', body);
             resolve(body);
             if(body) {
