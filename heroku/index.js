@@ -25,8 +25,6 @@ var retrieved_lead = [];
 var leadgen_id = [];
 var setLeadId = new Set();
 var setLeadAd = new Set();
-var result = {};
-var smsBody = '';
 var longLivedUserToken = '';
 
 //For Sms Service
@@ -36,7 +34,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + longLivedUserToken + '<br/>' + smsBody + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + longLivedUserToken + '<br/>' + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -52,11 +50,13 @@ app.get(['/facebook', '/instagram'], function(req, res) {
 
 const getFieldHelper = (body) => {
   const field = body.field_data || [];
+  var obj = {};
   field.map(data => {
     if(['full_name','email','phone_number'].includes(data.name)) {
-      result = {...result, [data.name]:data.values}
+      obj = {...obj, [data.name]:data.values}
     }
   })
+  return obj;
 }
 
 const wordBeautify = (str) => {
@@ -121,15 +121,15 @@ app.post('/facebook', function(req, res) {
           if(res.statusCode != 200) {
             console.error('Invalid status code <' + res.statusCode + '>');
           }
-          retrieved_lead.unshift(body);
-          getFieldHelper(JSON.parse(body))
           console.log('My App body:', body);
-          smsBody = wordBeautify(JSON.stringify(result));
+          retrieved_lead.unshift(body);
+          let obj = getFieldHelper(JSON.parse(body))
+          let sms = wordBeautify(JSON.stringify(obj));
           if(body) {
             // Send sms to manager including the user info
             client.messages 
               .create({ 
-                body: body,  
+                body: sms,  
                 from: '+13346038848',
                 to: '+13123076745'
               }) 
