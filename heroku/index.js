@@ -74,7 +74,7 @@
         console.error('error:', err);
       }
       if(res.statusCode != 200) {
-        reject('Invalid status code <' + res.statusCode + '>');
+        console.error('Invalid status code <' + res.statusCode + '>');
       }
       let obj = JSON.parse(body);
       longLivedUserToken = obj.access_token || "";  
@@ -107,39 +107,36 @@
    
    // Retrieve user info based on lead ads id
    if(leadgen_id) {
-     leadgen_id.map(leadId => new Promise((resolve, reject) => {
-       //Using Set to deduplicate lead_id
-         if(!setLeadId.has(leadId)) {
-           setLeadId.add(leadId);
-           request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAKNhsuhxknDI7xCnFAL7Trl1qn7pjntjvrsmVU2CTxSy6ZBBf3VC3NtJubI442wWMz4AdkfMA1Lk8G5GGaNX9kbBLrMeoXmnc98rw7fRvuMPIUstEcEpJYod1nwFMgwZCoF9VqQqW9YPb9sNe3IZCdfDJUio11ziXO6tfoCrZBbqPFhw9CMZD`,
-           function(err, res, body) {
-             if(err) {
-               console.error('error:', err);
-               reject(err)
-             }
-             if(res.statusCode != 200) {
-               reject('Invalid status code <' + res.statusCode + '>');
-             }
-             retrieved_lead.unshift(body);
-             getFieldHelper(JSON.parse(body))
-             console.log('My App body:', body);
-             smsBody = wordBeautify(JSON.stringify(result));
-             resolve(body);
-             if(body) {
-               // Send sms to manager including the user info
-               client.messages 
-                 .create({ 
-                   body: smsBody,  
-                   from: '+13346038848',
-                   to: '+13123076745'
-                 }) 
-                 .then(message => console.log('Successfully send', message)) 
-                 .done();
-             }  
-           });
-         }
-       })
-     );
+     leadgen_id.map(leadId => {
+        //Using Set to deduplicate lead_id
+        if(!setLeadId.has(leadId)) {
+          setLeadId.add(leadId);
+          request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAKNhsuhxknDI7xCnFAL7Trl1qn7pjntjvrsmVU2CTxSy6ZBBf3VC3NtJubI442wWMz4AdkfMA1Lk8G5GGaNX9kbBLrMeoXmnc98rw7fRvuMPIUstEcEpJYod1nwFMgwZCoF9VqQqW9YPb9sNe3IZCdfDJUio11ziXO6tfoCrZBbqPFhw9CMZD`,
+          function(err, res, body) {
+            if(err) {
+              console.error('error:', err);
+            }
+            if(res.statusCode != 200) {
+              console.error('Invalid status code <' + res.statusCode + '>');
+            }
+            retrieved_lead.unshift(body);
+            getFieldHelper(JSON.parse(body))
+            console.log('My App body:', body);
+            smsBody = wordBeautify(JSON.stringify(result));
+            if(body) {
+              // Send sms to manager including the user info
+              client.messages 
+                .create({ 
+                  body: smsBody,  
+                  from: '+13346038848',
+                  to: '+13123076745'
+                }) 
+                .then(message => console.log('Successfully send', message)) 
+                .done();
+            }  
+          });
+        }
+      });
    }
    res.sendStatus(200);
  });
