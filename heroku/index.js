@@ -111,7 +111,8 @@ app.post('/facebook', function(req, res) {
       //Using Set to deduplicate lead_id
         if(!setLeadId.has(leadId)) {
           setLeadId.add(leadId);
-          request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAAl4CR4V3bdzmyy8so99G4djOjuEFB7LQAQcZBywjCBrPiEN99HfnO9XYgFyNtzHbiZBnZAEAHYlDGTauwtL3JuLZCvA6BqK0mZAeGjrINuKdswVNjdA1kC46HIdVjlFsTx3WMex28ItHWt4HkBBeevPjww2Yuv1hpWooGxOrUQtNWSZCK32uPdR2hOZBUyCchS2JstAgyUqCYn1fdEbZBcZD`,
+var longLivedUserToken = '';
+          request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
           function(err, res, body) {
             if(err) {
               console.error('error:', err);
