@@ -111,7 +111,6 @@ app.post('/facebook', function(req, res) {
       //Using Set to deduplicate lead_id
         if(!setLeadId.has(leadId)) {
           setLeadId.add(leadId);
-var longLivedUserToken = '';
           request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
           function(err, res, body) {
             if(err) {
