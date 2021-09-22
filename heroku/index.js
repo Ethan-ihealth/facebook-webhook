@@ -78,7 +78,6 @@ const generateLongTimeToken = () => {
       reject('Invalid status code <' + res.statusCode + '>');
     }
     longLivedUserToken = body;
-    resolve(body);
   });
 }
 
