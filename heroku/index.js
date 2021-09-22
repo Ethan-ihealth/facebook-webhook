@@ -26,6 +26,7 @@ var retrieved_lead = [];
 var leadgen_id = [];
 var setLeadId = new Set();
 var setLeadAd = new Set();
+var result = {};
 
 //For Sms Service
 var accountSid = 'ACebd49745fc5a61de2af1a43723d09465';
@@ -34,7 +35,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + `${typeof retrieved_lead[0]}` + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + JSON.stringify(result) + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -47,6 +48,15 @@ app.get(['/facebook', '/instagram'], function(req, res) {
     res.sendStatus(400);
   }
 });
+
+const getFieldHelper = (body) => {
+  const field = body.field_data || [];
+  field.map(data => {
+    if(['full_name','email','phone_number'].includes(data.name)) {
+      result = {...result, [data.name]:data.values}
+    }
+  })
+}
 
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
@@ -85,6 +95,7 @@ app.post('/facebook', function(req, res) {
               reject('Invalid status code <' + response.statusCode + '>');
             }
             retrieved_lead.unshift(JSON.parse(body));
+            getFieldHelper(JSON.parse(body))
             console.log('My App body:', body);
             resolve(body);
             if(body) {
