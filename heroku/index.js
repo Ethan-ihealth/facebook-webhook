@@ -63,7 +63,7 @@ const wordBeautify = (str) => {
   var res = str.replace(/[\"\[\]\{\}]/g,'')
   res = res.replace(/[\"\_]/g, ' ');
   res = res.replace(/[\"\,]/g, '\n');
-  res = 'New User Info: \n' + res;
+  res = 'Potential User Info: \n' + res;
   return res;
 }
 
