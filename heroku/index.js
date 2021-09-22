@@ -24,6 +24,7 @@ var token = process.env.TOKEN || 'token';
 var received_updates = [];
 var retrieved_lead = [];
 var leadgen_id = [];
+var set = new Set();
 
 //For Sms Service
 var accountSid = 'ACebd49745fc5a61de2af1a43723d09465';
@@ -61,34 +62,53 @@ app.post('/facebook', function(req, res) {
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
   }
+  
 
   // Retrieve user info based on lead ads id
   if(leadgen_id) {
     leadgen_id.map(leadId => new Promise((resolve, reject) => {
-      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBADbht65szjupPihKZAlKHVmow2eRjVlKIVvLZAGGr4lmmjcJuNrHCXZC5DyF8K25A55XrMIlLxMOT2Ng7FAKJiZAQkUjSEY8U2KdSH8UuI8sKZBs9Rd9s7zVPPY6zAijiNBbaRNZCslYH0mNNIgKCgDRFb9Q5vZBYmG1u63D7v7XGDlVkcuyPzwRWJLFjIvXhmYO3kYHIYswC4T7fnEcA4ZD`,
-        function(err, res, body) {
-          if(err) {
-            console.error('error:', err);
-            reject(err)
-          }
-          if(response.statusCode != 200) {
-            reject('Invalid status code <' + response.statusCode + '>');
-          }
-          retrieved_lead.unshift(body);
-          console.log('body:', body);
-          if(body) {
-            // Send sms to manager including the user info
-            client.messages 
-              .create({ 
-                body: retrieved_lead,  
-                from: '+13346038848',
-                to: '+13123076745' 
-              }) 
-              .then(message => console.log('Successfully send', message)) 
-              .done();
-          }
-          resolve(body);
-        });
+      //Using Set to deduplicate lead_id
+        if(!set.has(leadId)) {
+          set.add(leadId);
+          request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAKjmHYQVzbzZByIyIODxWOZC4J0oZCh91tONRu9WHDi4ZCTjcagOZAlL32xI08Ccc3ZCZCTuF819F1Sobq3hVS6N2C4Wa2xCZCqNgtaUr0X5rOJ5Ul2gV1yTjc6ZA4RgsykF1ZBzKhDxMpNFZBfOC6UO4CdAeEcbySctSDLJmKqoGLG2ddoQRgQbCfrQSmTCKhod5r7mjflQ188TKxZCByuU1XkZD`,
+          function(err, res, body) {
+            if(err) {
+              console.error('error:', err);
+              reject(err)
+            }
+            if(response.statusCode != 200) {
+              reject('Invalid status code <' + response.statusCode + '>');
+            }
+            retrieved_lead.unshift(body);
+            console.log('body:', body);
+            resolve(body);
+            // if(body) {
+            //   // Send sms to manager including the user info
+            //   client.messages 
+            //     .create({ 
+            //       body: retrieved_lead,  
+            //       from: '+13346038848',
+            //       to: '+13123076745',
+            //       to: '+15305749776'
+            //     }) 
+            //     .then(message => console.log('Successfully send', message)) 
+            //     .done();
+            // }  
+          });
+        }
+      }).then((body) => {
+        if(body) {
+          // Send sms to manager including the user info
+          client.messages 
+            .create({ 
+              body: retrieved_lead,  
+              from: '+13346038848',
+              to: '+13123076745',
+              to: '+15305749776'
+            }) 
+            .then(message => console.log('Successfully send', message)) 
+            .done();
+        }
       })
     );
   }
