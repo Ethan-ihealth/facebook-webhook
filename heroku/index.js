@@ -126,7 +126,7 @@ app.post('/facebook', function(req, res) {
           if(res.statusCode != 200) {
             console.error('Invalid status code <' + res.statusCode + '>');
           }
-          console.log('My App body:', body);
+          console.log('body:', body);
           retrieved_lead.unshift(body);
           let obj = getFieldHelper(JSON.parse(body))
           let sms = wordBeautify(JSON.stringify(obj));
