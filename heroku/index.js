@@ -12,6 +12,7 @@ var app = express();
 var xhub = require('express-x-hub');
 var twilio = require('twilio');
 var request = require('request');
+const { response } = require('express');
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -63,25 +64,33 @@ app.post('/facebook', function(req, res) {
 
   // Retrieve user info based on lead ads id
   if(leadgen_id) {
-    leadgen_id.map(leadId => {
-      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAMaA8ZCycMMuFnLDShxKdcAJbMXuoBu3H4V30r0dVkgyEZBLyiBHxRkzNuDf6h1Qi3NVBGUs0YMvPZCdfs3eSy5G8rcRlDLJrKGaXqUlZCGjYAv5zQu3ffQIMo0FU555BNAU4ydBZBPZBSDnVKoNpZBQEQOLpWDLZBrZAzoF7L59Swt5yisifDtuT5k0O6373AXnVGvCbVdW9FQxh6lH0HkMZD`,
-      function(err, res, body) {
-        console.error('error:', err);
-        retrieved_lead.unshift(body);
-        console.log('body:', body);
-        if(body) {
-          // Send sms to manager including the user info
-          client.messages 
-            .create({ 
-              body: retrieved_lead,  
-              from: '+13346038848',
-              to: '+13123076745' 
-            }) 
-            .then(message => console.log('Successfully send')) 
-            .done();
-        }
-      });
-    });
+    leadgen_id.map(leadId => new Promise((resolve, reject) => {
+      request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBADbht65szjupPihKZAlKHVmow2eRjVlKIVvLZAGGr4lmmjcJuNrHCXZC5DyF8K25A55XrMIlLxMOT2Ng7FAKJiZAQkUjSEY8U2KdSH8UuI8sKZBs9Rd9s7zVPPY6zAijiNBbaRNZCslYH0mNNIgKCgDRFb9Q5vZBYmG1u63D7v7XGDlVkcuyPzwRWJLFjIvXhmYO3kYHIYswC4T7fnEcA4ZD`,
+        function(err, res, body) {
+          if(err) {
+            console.error('error:', err);
+            reject(err)
+          }
+          if(response.statusCode != 200) {
+            reject('Invalid status code <' + response.statusCode + '>');
+          }
+          retrieved_lead.unshift(body);
+          console.log('body:', body);
+          if(body) {
+            // Send sms to manager including the user info
+            client.messages 
+              .create({ 
+                body: retrieved_lead,  
+                from: '+13346038848',
+                to: '+13123076745' 
+              }) 
+              .then(message => console.log('Successfully send', message)) 
+              .done();
+          }
+          resolve(body);
+        });
+      })
+    );
   }
   res.sendStatus(200);
 });
