@@ -77,7 +77,8 @@ const generateLongTimeToken = () => {
     if(res.statusCode != 200) {
       reject('Invalid status code <' + res.statusCode + '>');
     }
-    longLivedUserToken = body;
+    let obj = JSON.parse(body);
+    longLivedUserToken = obj.access_token || "";
   });
 }
 
