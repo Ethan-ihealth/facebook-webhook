@@ -35,7 +35,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + JSON.stringify(result) + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + retrieved_lead + '<br/>' + JSON.stringify(result) + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -94,7 +94,7 @@ app.post('/facebook', function(req, res) {
             if(response.statusCode != 200) {
               reject('Invalid status code <' + response.statusCode + '>');
             }
-            retrieved_lead.unshift(JSON.parse(body));
+            retrieved_lead.unshift(body);
             getFieldHelper(JSON.parse(body))
             console.log('My App body:', body);
             resolve(body);
