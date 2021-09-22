@@ -76,7 +76,6 @@ const generateLongTimeToken = () => {
         reject(err);
       } else if(res.statusCode != 200) {
         console.error('Invalid status code <' + res.statusCode + '>');
-        reject(err);
       } else {
         let obj = JSON.parse(body);
         longLivedUserToken = obj.access_token || "";
@@ -86,7 +85,7 @@ const generateLongTimeToken = () => {
   }) 
 }
 
-app.post('/facebook', function(req, res) {
+app.post('/facebook', async function(req, res) {
   console.log('Facebook request body:', req.body);
 
   if (!req.isXHubValid()) {
@@ -98,7 +97,7 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
 
   if(!longLivedUserToken) {
-    generateLongTimeToken();
+    await generateLongTimeToken();
   }
 
   // Process the Facebook updates here
