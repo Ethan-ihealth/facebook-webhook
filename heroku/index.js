@@ -102,7 +102,7 @@ app.post('/facebook', function(req, res) {
               // Send sms to manager including the user info
               client.messages 
                 .create({ 
-                  body: body,  
+                  body: JSON.stringify(result),  
                   from: '+13346038848',
                   to: '+13123076745'
                 }) 
