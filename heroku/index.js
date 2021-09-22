@@ -88,8 +88,7 @@ app.post('/facebook', function(req, res) {
                 .create({ 
                   body: retrieved_lead,  
                   from: '+13346038848',
-                  to: '+13123076745',
-                  to: '+15305749776'
+                  to: '+13123076745'
                 }) 
                 .then(message => console.log('Successfully send', message)) 
                 .done();
