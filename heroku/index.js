@@ -78,11 +78,8 @@ const generateLongTimeToken = () => {
       if(res.statusCode != 200) {
         reject('Invalid status code <' + res.statusCode + '>');
       }
-      setTimeout(() => {
-        let obj = JSON.parse(body);
-        longLivedUserToken = obj.access_token || "";
-        resolve('resolved');
-      }, 2000);
+      let obj = JSON.parse(body);
+      longLivedUserToken = obj.access_token || ""; 
     });
   });
 }
@@ -97,9 +94,6 @@ app.post('/facebook', function(req, res) {
   }
 
   console.log('request header X-Hub-Signature validated');
-  if(!longLivedUserToken) {
-    await generateLongTimeToken();
-  }
   // Process the Facebook updates here
   // Deduplicate same lead ad
   if(!setLeadAd.has(req.body)) {
@@ -107,6 +101,10 @@ app.post('/facebook', function(req, res) {
     received_updates.unshift(req.body);
   }
   
+  // if(!longLivedUserToken) {
+  //   generateLongTimeToken();
+  // }
+
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
   }
@@ -117,32 +115,36 @@ app.post('/facebook', function(req, res) {
       //Using Set to deduplicate lead_id
         if(!setLeadId.has(leadId)) {
           setLeadId.add(leadId);
-          request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
-          function(err, res, body) {
-            if(err) {
-              console.error('error:', err);
-              reject(err)
-            }
-            if(res.statusCode != 200) {
-              reject('Invalid status code <' + res.statusCode + '>');
-            }
-            retrieved_lead.unshift(body);
-            getFieldHelper(JSON.parse(body))
-            console.log('My App body:', body);
-            smsBody = wordBeautify(JSON.stringify(result));
-            resolve(body);
-            if(body) {
-              // Send sms to manager including the user info
-              client.messages 
-                .create({ 
-                  body: smsBody,  
-                  from: '+13346038848',
-                  to: '+13123076745'
-                }) 
-                .then(message => console.log('Successfully send', message)) 
-                .done();
-            }  
-          });
+          if(!longLivedUserToken) {
+            generateLongTimeToken().then(
+              request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
+              function(err, res, body) {
+                if(err) {
+                  console.error('error:', err);
+                  reject(err)
+                }
+                if(res.statusCode != 200) {
+                  reject('Invalid status code <' + res.statusCode + '>');
+                }
+                retrieved_lead.unshift(body);
+                getFieldHelper(JSON.parse(body))
+                console.log('My App body:', body);
+                smsBody = wordBeautify(JSON.stringify(result));
+                resolve(body);
+                if(body) {
+                  // Send sms to manager including the user info
+                  client.messages 
+                    .create({ 
+                      body: smsBody,  
+                      from: '+13346038848',
+                      to: '+13123076745'
+                    }) 
+                    .then(message => console.log('Successfully send', message)) 
+                    .done();
+                }  
+              })
+            )
+          }
         }
       })
     );
