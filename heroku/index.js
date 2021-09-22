@@ -97,7 +97,11 @@ app.post('/facebook', async function(req, res) {
   console.log('request header X-Hub-Signature validated');
 
   if(!longLivedUserToken) {
-    await generateLongTimeToken();
+    try {
+      await generateLongTimeToken();
+    } catch(e) {
+      console.error(e);
+    }
   }
 
   // Process the Facebook updates here
