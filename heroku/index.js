@@ -61,7 +61,7 @@ app.post('/facebook', function(req, res) {
   // Process the Facebook updates here
   
   if(!setLeadAd.has(req.body)) {
-    set.add(req.body);
+    setLeadAd.add(req.body);
     received_updates.unshift(req.body);
   }
   
