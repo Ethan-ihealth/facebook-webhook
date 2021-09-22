@@ -69,7 +69,7 @@ const wordBeautify = (str) => {
 
 const generateLongTimeToken = () => {
   return new Promise((resolve, reject) => {
-    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAOI6N6DqiGnoSo3ZAzVWLSmht3lgKZB0AdoRKp7K7ykXnZBSu28p4ZCXJ42KAL5EFJSI7jqjhwDtcO728ZB4kBHGAaAvQUyz7ab97rWOCvu6RdThZAHLRZCIpIYBFp1YhxslvLbtQKMGZCbYBHzxBvCVf4ZBRiSWj90JPZCwkQrLl5bpLyCUP71BDgeLwtqNZCiuDzpzuZAZAh8OzrLFOO2sOiZCUZD`,
+    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAMn0myT1lzVVvPj1lgjHaUgoe4unClY0HcC7Y7S06y1uvQcZAuRD2hPKKpZAM1YE8X4KnJFf5eI3Lk0EWVPBZCS5Ld4yzSUSdBpSaGlshdWl4ZAPoDzhQ0LpOLGKTMQ7ZAvhjkmAEsTpMjZCDkSmxHGkuFT7kSD1ZA5V9QYel9BhFCW0eimJudaZBZBZBvXQTFHnPgHgITUw06aXfrn1KmiCIZD`,
     function(err, res, body) {
       if(err) {
         console.error('error:', err);
@@ -86,7 +86,7 @@ const generateLongTimeToken = () => {
   }) 
 }
 
-app.post('/facebook',  async function(req, res) {
+app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
 
   if (!req.isXHubValid()) {
@@ -98,7 +98,7 @@ app.post('/facebook',  async function(req, res) {
   console.log('request header X-Hub-Signature validated');
 
   if(!longLivedUserToken) {
-   await generateLongTimeToken();
+    generateLongTimeToken();
   }
 
   // Process the Facebook updates here
