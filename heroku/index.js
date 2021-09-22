@@ -68,17 +68,22 @@ const wordBeautify = (str) => {
 }
 
 const generateLongTimeToken = () => {
-  request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAAl4CR4V3bdzmyy8so99G4djOjuEFB7LQAQcZBywjCBrPiEN99HfnO9XYgFyNtzHbiZBnZAEAHYlDGTauwtL3JuLZCvA6BqK0mZAeGjrINuKdswVNjdA1kC46HIdVjlFsTx3WMex28ItHWt4HkBBeevPjww2Yuv1hpWooGxOrUQtNWSZCK32uPdR2hOZBUyCchS2JstAgyUqCYn1fdEbZBcZD`,
-  function(err, res, body) {
-    if(err) {
-      console.error('error:', err);
-      reject(err)
-    }
-    if(res.statusCode != 200) {
-      reject('Invalid status code <' + res.statusCode + '>');
-    }
-    let obj = JSON.parse(body);
-    return longLivedUserToken = obj.access_token || "";
+  return new Promise((resolve, reject) => {
+    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAAl4CR4V3bdzmyy8so99G4djOjuEFB7LQAQcZBywjCBrPiEN99HfnO9XYgFyNtzHbiZBnZAEAHYlDGTauwtL3JuLZCvA6BqK0mZAeGjrINuKdswVNjdA1kC46HIdVjlFsTx3WMex28ItHWt4HkBBeevPjww2Yuv1hpWooGxOrUQtNWSZCK32uPdR2hOZBUyCchS2JstAgyUqCYn1fdEbZBcZD`,
+    function(err, res, body) {
+      if(err) {
+        console.error('error:', err);
+        reject(err)
+      }
+      if(res.statusCode != 200) {
+        reject('Invalid status code <' + res.statusCode + '>');
+      }
+      setTimeout(() => {
+        let obj = JSON.parse(body);
+        longLivedUserToken = obj.access_token || "";
+        resolve('resolved');
+      }, 2000);
+    });
   });
 }
 
@@ -93,7 +98,7 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   if(!longLivedUserToken) {
-    longLivedUserToken = await generateLongTimeToken();
+    await generateLongTimeToken();
   }
   // Process the Facebook updates here
   // Deduplicate same lead ad
