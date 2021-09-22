@@ -24,7 +24,8 @@ var token = process.env.TOKEN || 'token';
 var received_updates = [];
 var retrieved_lead = [];
 var leadgen_id = [];
-var set = new Set();
+var setLeadId = new Set();
+var setLeadAd = new Set();
 
 //For Sms Service
 var accountSid = 'ACebd49745fc5a61de2af1a43723d09465';
@@ -58,18 +59,25 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
-  received_updates.unshift(req.body);
+  
+  req.body.map(data => {
+    if(!setLeadAd.has(data)) {
+      setLeadAd.add(data);
+      received_updates.unshift(data);
+    }
+  })
+  // received_updates.unshift(req.body);
+  
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
   }
   
-
   // Retrieve user info based on lead ads id
   if(leadgen_id) {
     leadgen_id.map(leadId => new Promise((resolve, reject) => {
       //Using Set to deduplicate lead_id
-        if(!set.has(leadId)) {
-          set.add(leadId);
+        if(!setLeadId.has(leadId)) {
+          setLeadId.add(leadId);
           request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAKjmHYQVzbzZByIyIODxWOZC4J0oZCh91tONRu9WHDi4ZCTjcagOZAlL32xI08Ccc3ZCZCTuF819F1Sobq3hVS6N2C4Wa2xCZCqNgtaUr0X5rOJ5Ul2gV1yTjc6ZA4RgsykF1ZBzKhDxMpNFZBfOC6UO4CdAeEcbySctSDLJmKqoGLG2ddoQRgQbCfrQSmTCKhod5r7mjflQ188TKxZCByuU1XkZD`,
           function(err, res, body) {
             if(err) {
