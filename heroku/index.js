@@ -27,6 +27,7 @@ var leadgen_id = [];
 var setLeadId = new Set();
 var setLeadAd = new Set();
 var result = {};
+var smsBody = '';
 
 //For Sms Service
 var accountSid = 'ACebd49745fc5a61de2af1a43723d09465';
@@ -56,6 +57,12 @@ const getFieldHelper = (body) => {
       result = {...result, [data.name]:data.values}
     }
   })
+}
+
+const wordBeautify = (str) => {
+  var res = str.replace(/[\"\[\]\{\}]/g,'')
+  res = result.replace(/[\"\,]/g, '\n');
+  return res;
 }
 
 app.post('/facebook', function(req, res) {
@@ -97,12 +104,13 @@ app.post('/facebook', function(req, res) {
             retrieved_lead.unshift(body);
             getFieldHelper(JSON.parse(body))
             console.log('My App body:', body);
+            smsBody = wordBeautify(JSON.stringify(result));
             resolve(body);
             if(body) {
               // Send sms to manager including the user info
               client.messages 
                 .create({ 
-                  body: JSON.stringify(result),  
+                  body: smsBody,  
                   from: '+13346038848',
                   to: '+13123076745'
                 }) 
