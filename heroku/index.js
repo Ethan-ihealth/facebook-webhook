@@ -60,13 +60,10 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   
-  req.body.map(data => {
-    if(!setLeadAd.has(data)) {
-      setLeadAd.add(data);
-      received_updates.unshift(data);
-    }
-  })
-  // received_updates.unshift(req.body);
+  if(!setLeadAd.has(req.body)) {
+    set.add(req.body);
+    received_updates.unshift(req.body);
+  }
   
   if(received_updates) {
     received_updates.map(data => leadgen_id.unshift(data.entry[0].changes[0].value.leadgen_id))
