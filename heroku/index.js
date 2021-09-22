@@ -82,32 +82,19 @@ app.post('/facebook', function(req, res) {
             retrieved_lead.unshift(body);
             console.log('body:', body);
             resolve(body);
-            // if(body) {
-            //   // Send sms to manager including the user info
-            //   client.messages 
-            //     .create({ 
-            //       body: retrieved_lead,  
-            //       from: '+13346038848',
-            //       to: '+13123076745',
-            //       to: '+15305749776'
-            //     }) 
-            //     .then(message => console.log('Successfully send', message)) 
-            //     .done();
-            // }  
+            if(body) {
+              // Send sms to manager including the user info
+              client.messages 
+                .create({ 
+                  body: retrieved_lead,  
+                  from: '+13346038848',
+                  to: '+13123076745',
+                  to: '+15305749776'
+                }) 
+                .then(message => console.log('Successfully send', message)) 
+                .done();
+            }  
           });
-        }
-      }).then((body) => {
-        if(body) {
-          // Send sms to manager including the user info
-          client.messages 
-            .create({ 
-              body: retrieved_lead,  
-              from: '+13346038848',
-              to: '+13123076745',
-              to: '+15305749776'
-            }) 
-            .then(message => console.log('Successfully send', message)) 
-            .done();
         }
       })
     );
