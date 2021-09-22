@@ -84,8 +84,8 @@ app.post('/facebook', function(req, res) {
             if(response.statusCode != 200) {
               reject('Invalid status code <' + response.statusCode + '>');
             }
-            retrieved_lead.unshift(body.field_data);
-            console.log('body:', body);
+            retrieved_lead.unshift(body);
+            console.log('My App body:', body);
             resolve(body);
             if(body) {
               // Send sms to manager including the user info
