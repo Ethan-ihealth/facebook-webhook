@@ -86,7 +86,7 @@ app.post('/facebook', function(req, res) {
               // Send sms to manager including the user info
               client.messages 
                 .create({ 
-                  body: retrieved_lead,  
+                  body: body,  
                   from: '+13346038848',
                   to: '+13123076745'
                 }) 
