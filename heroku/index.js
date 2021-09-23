@@ -130,7 +130,7 @@ app.post('/facebook', function(req, res) {
             let obj = getFieldHelper(JSON.parse(body))
             let sms = wordBeautify(JSON.stringify(obj));
             let number = ['+13123076745', '+16503368768', '+16505146220', '+19175289141']
-            for(num in number) {
+            number.forEach(async num => {
               if(sms) {
                 // Send sms to manager including the user info
                 client.messages 
@@ -142,7 +142,7 @@ app.post('/facebook', function(req, res) {
                   .then(message => console.log('Successfully send', message)) 
                   .done();
               }  
-            }
+            })
           }
         });
       }
