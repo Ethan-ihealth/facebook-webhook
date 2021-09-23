@@ -69,13 +69,13 @@ const wordBeautify = (str) => {
 
 const generateLongTimeToken = () => {
   return new Promise((resolve, reject) => {
-    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBANSo5VIUcmPn0tyQUAZBlZAsAEuGuSgjLBLD0nnmFNOCgJMZCO6p1oOU7WWLxKEeFVbCegoegCJE37CzwfVLM0PGBcUJSctkZBP7z6tFy8Mrss1FDlxZC9eAhABZBHVy7h3gF11IIdGQxHgIGDOMw5TI6Hg0Bi6S0hJ9OskTmrgOl2ZA5K0Odwd6YwUdy5aQl5XLuZCZCMxJl5i8o9r6Vnw8ZD`,
+    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAHh1e9h9RfTTljT7MDMxSaiPkZCoV4KkZBpnGlhcPpfZAHj4CQWFih3qO9DOmm4h0R6ELtF8BaZCS25dzknyviFz7DpVYq5gO6g4O1yXZADDmMOPGa59c7VZC8DmcpbyCDwYBK6s7vRYQZBc0JZBPqMZC9mPG2RhtkGEixZBIBAlDokMexQoEscsdPhNTq7CznGY71LC0VxJXk`,
     function(err, res, body) {
       if(err) {
-        console.error('error:', err, '-----body', body);
+        console.error('Get Long Token Error:', err, '\nBody', body);
         reject(err);
       } else if(res.statusCode != 200) {
-        console.error('Invalid status code <' + res.statusCode + '>', '-----body', body);
+        console.error('Get Long Token Invalid status code <' + res.statusCode + '>', '\nBody', body);
       } else {
         let obj = JSON.parse(body);
         longLivedUserToken = obj.access_token || "";
@@ -86,7 +86,9 @@ const generateLongTimeToken = () => {
 }
 
 //Get Long time token when deploying
-generateLongTimeToken()
+if(!longLivedUserToken) {
+  generateLongTimeToken()
+}
 
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
@@ -98,8 +100,6 @@ app.post('/facebook', function(req, res) {
   }
 
   console.log('request header X-Hub-Signature validated');
-
-  
 
   // Process the Facebook updates here
   // Deduplicate same lead ad
@@ -118,12 +118,12 @@ app.post('/facebook', function(req, res) {
       //Using Set to deduplicate lead_id
       if(!setLeadId.has(leadId)) {
         setLeadId.add(leadId);
-        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
+        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAIveYOHo47S8U2NQAxtIod4pRodZB1JTFBp19190WW2Y4uGoxob6JsMrdbk60Ho1OqzZAS66KBvYbyAxVVNLt9cgWLuzZBDeZAUUfMScZBvArlBPN2eS1R6JVwOTUYRpOwFqIw8zl9bFmfewgyWZAJTFimyHIXvlfFpScKQT0PYWZCj0tZALNZCMZD`,
         function(err, res, body) {
           if(err) {
-            console.error('error:', err, '-----body', body);
+            console.error('Retrieve Error:', err, '\nBody', body);
           } else if(res.statusCode != 200) {
-            console.error('Invalid status code <' + res.statusCode + '>', '-----body', body);
+            console.error('Retrieve Invalid status code <' + res.statusCode + '>', '\nBody', body);
           } else {
             console.log('My App body!!:', body);
             retrieved_lead.unshift(body);
