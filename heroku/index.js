@@ -118,7 +118,7 @@ app.post('/facebook', function(req, res) {
       //Using Set to deduplicate lead_id
       if(!setLeadId.has(leadId)) {
         setLeadId.add(leadId);
-        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAIveYOHo47S8U2NQAxtIod4pRodZB1JTFBp19190WW2Y4uGoxob6JsMrdbk60Ho1OqzZAS66KBvYbyAxVVNLt9cgWLuzZBDeZAUUfMScZBvArlBPN2eS1R6JVwOTUYRpOwFqIw8zl9bFmfewgyWZAJTFimyHIXvlfFpScKQT0PYWZCj0tZALNZCMZD`,
+        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBANn7gJZAlwg2sZCAUDbGnQL5Na1YbIXdNIq7bLEr86CaGmUZAgRAFfVzW65jq2KqFy3hRCpzLreIy9Mu0nyLZBaIBVZCQzbtV8CBZADwnX1eoQJA9ZArBjaGgnfuedOy3rK9RTD8VYmk3IZB4ctQWn5CMpWlsjgApweZCU7hbKTKkYSZCYIsAao6oZD`,
         function(err, res, body) {
           if(err) {
             console.error('Retrieve Error:', err, '\nBody', body);
@@ -135,7 +135,10 @@ app.post('/facebook', function(req, res) {
                 .create({ 
                   body: sms,  
                   from: '+13346038848',
-                  to: '+13123076745'
+                  to: '+13123076745',
+                  to: '+16503368768',
+                  to: '+16505146220',
+                  to: '+19175289141'
                 }) 
                 .then(message => console.log('Successfully send', message)) 
                 .done();
