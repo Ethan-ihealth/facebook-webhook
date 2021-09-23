@@ -96,14 +96,14 @@ app.post('/facebook', async function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
 
-  if(!longLivedUserToken) {
-    console.error('LongLivedToken does not exist');
-    try {
-      await generateLongTimeToken();
-    } catch(e) {
-      console.error(e);
-    }
-  }
+  // if(!longLivedUserToken) {
+  //   console.error('LongLivedToken does not exist');
+  //   try {
+  //     await generateLongTimeToken();
+  //   } catch(e) {
+  //     console.error(e);
+  //   }
+  // }
 
   // Process the Facebook updates here
   // Deduplicate same lead ad
@@ -122,7 +122,7 @@ app.post('/facebook', async function(req, res) {
       //Using Set to deduplicate lead_id
       if(!setLeadId.has(leadId)) {
         setLeadId.add(leadId);
-        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=${longLivedUserToken}`,
+        request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBAAKBCIuTB8vlp0QaZCeyZAeYxWDatv6tZA41WZBCZAwCpfZBVQr1OQK50IAZBZB4KiYCuTYN2ZCaYXDF2acuadxTwmbhldHD0HnCKCc5uvFJZAWcPs46lSlw7wKpFDWa2GZAfE8TFjdytzt1yOtueChxbv3INJT4GFhFxVKZA5ULbznwReygVuyio3EZD`,
         function(err, res, body) {
           if(err) {
             console.error('error:', err);
