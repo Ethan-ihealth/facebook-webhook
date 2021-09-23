@@ -125,25 +125,25 @@ app.post('/facebook', async function(req, res) {
         function(err, res, body) {
           if(err) {
             console.error('error:', err);
-          }
-          if(res.statusCode != 200) {
+          } else if(res.statusCode != 200) {
             console.error('Invalid status code <' + res.statusCode + '>');
+          } else {
+            console.log('My App body:', body);
+            retrieved_lead.unshift(body);
+            let obj = getFieldHelper(JSON.parse(body))
+            let sms = wordBeautify(JSON.stringify(obj));
+            if(body) {
+              // Send sms to manager including the user info
+              client.messages 
+                .create({ 
+                  body: sms,  
+                  from: '+13346038848',
+                  to: '+13123076745'
+                }) 
+                .then(message => console.log('Successfully send', message)) 
+                .done();
+            }  
           }
-          console.log('My App body:', body);
-          retrieved_lead.unshift(body);
-          let obj = getFieldHelper(JSON.parse(body))
-          let sms = wordBeautify(JSON.stringify(obj));
-          if(body) {
-            // Send sms to manager including the user info
-            client.messages 
-              .create({ 
-                body: sms,  
-                from: '+13346038848',
-                to: '+13123076745'
-              }) 
-              .then(message => console.log('Successfully send', message)) 
-              .done();
-          }  
         });
       }
     });
