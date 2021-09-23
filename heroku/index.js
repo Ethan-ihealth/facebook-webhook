@@ -97,6 +97,7 @@ app.post('/facebook', async function(req, res) {
   console.log('request header X-Hub-Signature validated');
 
   if(!longLivedUserToken) {
+    console.error('LongLivedToken does not exist');
     try {
       await generateLongTimeToken();
     } catch(e) {
@@ -128,7 +129,7 @@ app.post('/facebook', async function(req, res) {
           } else if(res.statusCode != 200) {
             console.error('Invalid status code <' + res.statusCode + '>');
           } else {
-            console.log('My App body:', body);
+            console.log('My App body!!:', body);
             retrieved_lead.unshift(body);
             let obj = getFieldHelper(JSON.parse(body))
             let sms = wordBeautify(JSON.stringify(obj));
