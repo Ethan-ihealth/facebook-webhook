@@ -133,13 +133,13 @@ app.post('/facebook', function(req, res) {
             number.forEach(async num => {
               if(sms) {
                 // Send sms to manager including the user info
-                client.messages 
+                await client.messages 
                   .create({ 
                     body: sms,  
                     from: '+13346038848',
                     to: num
                   }) 
-                  .then(message => console.log('Successfully send', message)) 
+                  .then(message => console.log('Successfully send many ppl', message)) 
                   .done();
               }  
             })
