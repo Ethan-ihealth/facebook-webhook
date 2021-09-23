@@ -132,7 +132,7 @@ app.post('/facebook', async function(req, res) {
             retrieved_lead.unshift(body);
             let obj = getFieldHelper(JSON.parse(body))
             let sms = wordBeautify(JSON.stringify(obj));
-            if(body) {
+            if(sms) {
               // Send sms to manager including the user info
               client.messages 
                 .create({ 
