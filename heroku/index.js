@@ -69,7 +69,7 @@ const wordBeautify = (str) => {
 
 const generateLongTimeToken = () => {
   return new Promise((resolve, reject) => {
-    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBAHh1e9h9RfTTljT7MDMxSaiPkZCoV4KkZBpnGlhcPpfZAHj4CQWFih3qO9DOmm4h0R6ELtF8BaZCS25dzknyviFz7DpVYq5gO6g4O1yXZADDmMOPGa59c7VZC8DmcpbyCDwYBK6s7vRYQZBc0JZBPqMZC9mPG2RhtkGEixZBIBAlDokMexQoEscsdPhNTq7CznGY71LC0VxJXk`,
+    request(`https://graph.facebook.com/v12.0/oauth/access_token?grant_type=fb_exchange_token&client_id=589897248853446&client_secret=57c8d239d63ce762c84e4f7437f1a59a&fb_exchange_token=EAAIYgif4zcYBACZCZBxcQDPlcjvLIC9TZCSf4o10kch0YZB2vPBK38g53u8MiqAm6lwEoNfGazmQsbv8xDuBpLsHCsaRfeNT62noD1FHkAm2Mj8IVfO0T5rEncKYoAyvx2CiGMnkV94elQmYUu73CqImUqpvZApLxRrfovtcCrvui61K4oP19N8UKujWQZAC4ZD`,
     function(err, res, body) {
       if(err) {
         console.error('Get Long Token Error:', err, '\nBody', body);
