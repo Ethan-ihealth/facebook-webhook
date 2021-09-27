@@ -106,21 +106,21 @@ app.post('/facebook', function(req, res) {
   if(!setLeadAd.has(req.body)) {
     setLeadAd.add(req.body);
     received_updates.unshift(req.body);
-    let number = ['+13123076745']
-    let sms = "New Webhook Lead Event: " + req.body;
-    number.forEach(async num => {
-      if(sms) {
-        // Send sms to manager including the user info
-        await client.messages 
-          .create({ 
-            body: sms,  
-            from: '+13346038848',
-            to: num
-          }) 
-          .then(message => console.log('Successfully send many ppl', message)) 
-          .done();
-      }  
-    })
+    // let number = ['+13123076745']
+    // let sms = "New Webhook Lead Event: " + req.body;
+    // number.forEach(async num => {
+    //   if(sms) {
+    //     // Send sms to manager including the user info
+    //     await client.messages 
+    //       .create({ 
+    //         body: sms,  
+    //         from: '+13346038848',
+    //         to: num
+    //       }) 
+    //       .then(message => console.log('Successfully send many ppl', message)) 
+    //       .done();
+    //   }  
+    // })
   }
   
   if(received_updates) {
