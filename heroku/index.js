@@ -156,7 +156,9 @@ app.post('/facebook', function(req, res) {
                   }) 
                   .then(message => console.log('Successfully send many ppl', message)) 
                   .done();
-              }  
+              } else {
+                console.log('Sms is Empty');
+              }
             })
           }
         });
