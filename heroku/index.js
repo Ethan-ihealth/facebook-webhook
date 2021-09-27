@@ -121,9 +121,9 @@ app.post('/facebook', function(req, res) {
         request(`https://graph.facebook.com/v12.0/${leadId}?access_token=EAAIYgif4zcYBANrAlyTlUHmYijRh6H5VSZCM8HWZAPVVp5fByVinSvKDg7TSF1areTFGlCtlpbmHNZB2A62VoeQwUAREm4H5WNp9g0pJf2Rmc5lXNJmOxBxi4XSpVS2X4vpOcaJTpCiUKgkRrH3WjzkpHs1Xugu3G53lMgMHIXlZA2e5yZBb6nSz34u9m6Pi7DyZAn4F7AqQZDZD`,
         function(err, res, body) {
           if(err) {
-            console.error('Retrieve Error:', err, '\nBody', body);
+            console.error('Retrieving Error:', err, '\nBody', body);
           } else if(res.statusCode != 200) {
-            console.error('Retrieve Invalid status code <' + res.statusCode + '>', '\nBody', body);
+            console.error('Retrieving Invalid status code <' + res.statusCode + '>', '\nBody', body);
           } else {
             console.log('My App body!!:', body);
             retrieved_lead.unshift(body);
