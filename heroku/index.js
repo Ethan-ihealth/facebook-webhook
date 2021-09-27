@@ -107,7 +107,7 @@ app.post('/facebook', function(req, res) {
     received_updates.unshift(req.body);
     let field = req.body.entry[0].changes[0].field;
     let number = ['+13123076745']
-    let sms = "New Webhook Lead Event on " + field + " field";
+    let sms = "New Webhook Lead Event: " + field; 
     number.forEach(async num => {
       if(sms) {
         // Send sms to manager including the user info
