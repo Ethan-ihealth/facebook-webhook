@@ -15,7 +15,6 @@ var request = require('request');
  
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
-
 app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 app.use(bodyParser.json());
 
@@ -106,6 +105,7 @@ app.post('/facebook', function(req, res) {
   if(!setLeadAd.has(req.body)) {
     setLeadAd.add(req.body);
     received_updates.unshift(req.body);
+    let field = req.body.entry[0].changes[0].field;
     let number = ['+13123076745']
     let sms = "New Webhook Lead Event!!";
     number.forEach(async num => {
@@ -113,7 +113,7 @@ app.post('/facebook', function(req, res) {
         // Send sms to manager including the user info
         await client.messages 
           .create({ 
-            body: sms,  
+            body: field,  
             from: '+13346038848',
             to: num
           }) 
