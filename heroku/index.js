@@ -33,7 +33,7 @@ var client = new twilio(accountSid, authToken);
 
 app.get('/', function(req, res) {
   console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + longLivedUserToken + '<br/>' + retrieved_lead + '</pre>');
+  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '<br/>' + retrieved_lead + '</pre>');
 });
 
 app.get(['/facebook', '/instagram'], function(req, res) {
@@ -103,9 +103,9 @@ const sendSms = (numbers, sms) => {
 }
 
 //Get Long time token when deploying
-if(!longLivedUserToken) {
-  generateLongTimeToken()
-}
+// if(!longLivedUserToken) {
+//   generateLongTimeToken()
+// }
 
 app.post('/facebook', function(req, res) {
   console.log('Facebook request body:', req.body);
@@ -127,19 +127,6 @@ app.post('/facebook', function(req, res) {
     let numbers = ['+13123076745']
     let sms = "New Webhook Event: " + field; 
     sendSms(numbers, sms);
-    // number.forEach(async num => {
-    //   if(sms) {
-    //     // Send sms to manager including the user info
-    //     await client.messages 
-    //       .create({ 
-    //         body: sms,  
-    //         from: '+13346038848',
-    //         to: num
-    //       }) 
-    //       .then(message => console.log('Successfully send many ppl', message)) 
-    //       .done();
-    //   }  
-    // })
   }
   
   if(received_updates) {
@@ -165,21 +152,6 @@ app.post('/facebook', function(req, res) {
             let sms = wordBeautify(JSON.stringify(obj));
             let numbers = ['+13123076745'];
             sendSms(numbers, sms);
-            // number.forEach(async num => {
-            //   if(sms) {
-            //     // Send sms to manager including the user info
-            //     await client.messages 
-            //       .create({ 
-            //         body: sms,  
-            //         from: '+13346038848',
-            //         to: num
-            //       }) 
-            //       .then(message => console.log('Successfully send many ppl', message)) 
-            //       .done();
-            //   } else {
-            //     console.log('Text Body is Empty!!');
-            //   }
-            // })
           }
         });
       }
