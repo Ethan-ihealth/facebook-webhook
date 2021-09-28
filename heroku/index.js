@@ -84,6 +84,24 @@ const generateLongTimeToken = () => {
   }) 
 }
 
+const sendSms = (numbers, sms) => {
+  numbers.forEach(async num => {
+    if(sms) {
+      // Send sms to manager including the user info
+      await client.messages 
+        .create({ 
+          body: sms,  
+          from: '+13346038848',
+          to: num
+        }) 
+        .then(message => console.log('Successfully send many ppl', message)) 
+        .done();
+    } else {
+      console.log('Text body is empty!!');
+    }
+  })
+}
+
 //Get Long time token when deploying
 if(!longLivedUserToken) {
   generateLongTimeToken()
@@ -106,21 +124,22 @@ app.post('/facebook', function(req, res) {
     setLeadAd.add(req.body);
     received_updates.unshift(req.body);
     let field = req.body.entry[0].changes[0].field;
-    let number = ['+13123076745']
-    let sms = "New Webhook Lead Event: " + field; 
-    number.forEach(async num => {
-      if(sms) {
-        // Send sms to manager including the user info
-        await client.messages 
-          .create({ 
-            body: sms,  
-            from: '+13346038848',
-            to: num
-          }) 
-          .then(message => console.log('Successfully send many ppl', message)) 
-          .done();
-      }  
-    })
+    let numbers = ['+13123076745']
+    let sms = "New Webhook Event: " + field; 
+    sendSms(numbers, sms);
+    // number.forEach(async num => {
+    //   if(sms) {
+    //     // Send sms to manager including the user info
+    //     await client.messages 
+    //       .create({ 
+    //         body: sms,  
+    //         from: '+13346038848',
+    //         to: num
+    //       }) 
+    //       .then(message => console.log('Successfully send many ppl', message)) 
+    //       .done();
+    //   }  
+    // })
   }
   
   if(received_updates) {
@@ -144,22 +163,23 @@ app.post('/facebook', function(req, res) {
             retrieved_lead.unshift(body);
             let obj = getFieldHelper(JSON.parse(body))
             let sms = wordBeautify(JSON.stringify(obj));
-            let number = ['+13123076745']
-            number.forEach(async num => {
-              if(sms) {
-                // Send sms to manager including the user info
-                await client.messages 
-                  .create({ 
-                    body: sms,  
-                    from: '+13346038848',
-                    to: num
-                  }) 
-                  .then(message => console.log('Successfully send many ppl', message)) 
-                  .done();
-              } else {
-                console.log('Text Body is Empty!!');
-              }
-            })
+            let numbers = ['+13123076745'];
+            sendSms(numbers, sms);
+            // number.forEach(async num => {
+            //   if(sms) {
+            //     // Send sms to manager including the user info
+            //     await client.messages 
+            //       .create({ 
+            //         body: sms,  
+            //         from: '+13346038848',
+            //         to: num
+            //       }) 
+            //       .then(message => console.log('Successfully send many ppl', message)) 
+            //       .done();
+            //   } else {
+            //     console.log('Text Body is Empty!!');
+            //   }
+            // })
           }
         });
       }
